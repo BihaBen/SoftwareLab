@@ -1,0 +1,89 @@
+[
+  {
+    "rule_id": "R1",
+    "conditions": [
+      {
+        "attribute": "is_regular_customer_with_card",
+        "operator": "==",
+        "value": true
+      },
+      {
+        "attribute": "buying_new_books_online",
+        "operator": "==",
+        "value": true
+      }
+    ],
+    "action": {
+      "attribute": "price_reduction_percent",
+      "operator": "=",
+      "value": 10
+    }
+  },
+  {
+    "rule_id": "R2",
+    "conditions": [
+      {
+        "attribute": "new_books_total_eur",
+        "operator": ">=",
+        "value": 50
+      }
+    ],
+    "action": {
+      "attribute": "price_reduction_percent",
+      "operator": "=",
+      "value": 10
+    }
+  },
+  {
+    "rule_id": "R3",
+    "conditions": [
+      {
+        "attribute": "has_card",
+        "operator": "==",
+        "value": true
+      },
+      {
+        "attribute": "new_books_total_eur",
+        "operator": ">=",
+        "value": 50
+      }
+    ],
+    "action": {
+      "attribute": "price_reduction_percent",
+      "operator": "=",
+      "value": 15
+    }
+  },
+  {
+    "rule_id": "R4",
+    "conditions": [
+      {
+        "attribute": "has_second_hand_books",
+        "operator": "==",
+        "value": true
+      },
+      {
+        "attribute": "second_hand_books_total_eur",
+        "operator": ">",
+        "value": 60
+      },
+      {
+        "attribute": "new_books_total_eur",
+        "operator": ">",
+        "value": 30
+      }
+    ],
+    "action": {
+      "attribute": "price_reduction_percent",
+      "operator": "=",
+      "value": 5
+    }
+  },
+  {
+    "rule_id": "R5",
+    "constraints": {
+      "min_price_difference_eur": 0.01
+    },
+    "note": "The output is the price to be paid, rounded with at least 0.01 EUR precision."
+  }
+]

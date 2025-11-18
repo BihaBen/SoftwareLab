@@ -1,0 +1,115 @@
+[
+  {
+    "rule_id": "R1",
+    "conditions": [
+      {
+        "attribute": "price_eur",
+        "operator": ">=",
+        "value": 200
+      }
+    ],
+    "action": {
+      "attribute": "price_reduction_percent",
+      "operator": "=",
+      "value": 10
+    }
+  },
+  {
+    "rule_id": "R2a",
+    "conditions": [
+      {
+        "attribute": "weight_kg",
+        "operator": "<",
+        "value": 5
+      }
+    ],
+    "action": {
+      "attribute": "delivery_price_eur",
+      "operator": "=",
+      "value": 0
+    }
+  },
+  {
+    "rule_id": "R2b",
+    "conditions": [
+      {
+        "attribute": "weight_kg",
+        "operator": ">=",
+        "value": 5
+      }
+    ],
+    "action": {
+      "attribute": "delivery_price_eur",
+      "operator": "=",
+      "value_from": "weight_kg"
+    }
+  },
+  {
+    "rule_id": "R3",
+    "conditions": [
+      {
+        "attribute": "price_eur",
+        "operator": ">",
+        "value": 100
+      }
+    ],
+    "action": {
+      "attribute": "delivery_price_eur",
+      "operator": "=",
+      "value": 0
+    }
+  },
+  {
+    "rule_id": "R4",
+    "conditions": [
+      {
+        "attribute": "pay_with_card",
+        "operator": "==",
+        "value": true
+      },
+      {
+        "attribute": "prepaid",
+        "operator": "==",
+        "value": true
+      }
+    ],
+    "action": {
+      "attribute": "price_reduction_additional_percent",
+      "operator": "=",
+      "value": 3
+    }
+  },
+  {
+    "rule_id": "R5",
+    "conditions": [
+      {
+        "attribute": "price_eur",
+        "operator": ">=",
+        "value": 200
+      },
+      {
+        "attribute": "pay_with_card",
+        "operator": "==",
+        "value": true
+      },
+      {
+        "attribute": "weight_kg",
+        "operator": "<",
+        "value": 5
+      }
+    ],
+    "action": {
+      "attribute": "price_reduction_percent",
+      "operator": "=",
+      "value": 15
+    }
+  },
+  {
+    "rule_id": "R6",
+    "constraints": {
+      "min_price_difference_eur": 0.1,
+      "min_weight_difference_kg": 0.1
+    },
+    "note": "Applies to rounding, display, or comparison precision."
+  }
+]
