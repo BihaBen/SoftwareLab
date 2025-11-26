@@ -1,0 +1,67 @@
+{
+  "variables": [
+    {
+      "name": "blackboard_exercises_points",
+      "type": "integer",
+      "unit": "points",
+      "role": "input"
+    },
+    {
+      "name": "laboratory_exercises_points",
+      "type": "integer",
+      "unit": "points",
+      "role": "input"
+    },
+    {
+      "name": "written_part_points",
+      "type": "integer",
+      "unit": "points",
+      "role": "input"
+    },
+    {
+      "name": "sum_points",
+      "type": "integer",
+      "unit": "points",
+      "role": "internal"
+    },
+    {
+      "name": "result_grade",
+      "type": "string",
+      "role": "output"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "R1",
+      "description": "A university course grade system evaluates grades based on BE (blackboard exercises), LE (laboratory exercises), WP (written part), each in the range 0–50 points.",
+      "causes": [],
+      "effects": []
+    },
+    {
+      "id": "R2",
+      "description": "The sum of partial grades SUM = (BE + LE + WP) is calculated.",
+      "causes": [],
+      "effects": [
+        {
+          "variable": "sum_points",
+          "operator": "=",
+          "expression": "blackboard_exercises_points + laboratory_exercises_points + written_part_points"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "R_result",
+      "description": "Final grade according to rules R2-1 to R2-5 (failed/satisfactory/good/very good).",
+      "causes": [],
+      "effects": [
+        {
+          "variable": "result_grade",
+          "operator": "=",
+          "expression": "(blackboard_exercises_points < 25 || laboratory_exercises_points < 25 || written_part_points < 25 || sum_points < 76) ? \"failed\" : (sum_points <= 100 ? \"satisfactory\" : (sum_points <= 125 ? \"good\" : \"very good\"))"
+        }
+      ]
+    }
+  ]
+}

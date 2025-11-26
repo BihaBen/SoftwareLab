@@ -1,0 +1,167 @@
+{
+  "variables": [
+    {
+      "name": "is_regular_customer",
+      "type": "boolean",
+      "role": "input"
+    },
+    {
+      "name": "has_loyalty_card",
+      "type": "boolean",
+      "role": "input"
+    },
+    {
+      "name": "total_new_books_price",
+      "type": "decimal",
+      "unit": "EUR",
+      "role": "input"
+    },
+    {
+      "name": "total_second_hand_books_price",
+      "type": "decimal",
+      "unit": "EUR",
+      "role": "input"
+    },
+    {
+      "name": "gross_total_price",
+      "type": "decimal",
+      "unit": "EUR",
+      "role": "internal"
+    },
+    {
+      "name": "discount_rate",
+      "type": "decimal",
+      "role": "internal"
+    },
+    {
+      "name": "min_price_step",
+      "type": "decimal",
+      "unit": "EUR",
+      "role": "internal"
+    },
+    {
+      "name": "price_to_be_paid",
+      "type": "decimal",
+      "unit": "EUR",
+      "role": "output"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "R1",
+      "description": "For online new book purchasing regular customers with cards obtain 10% price reduction.",
+      "causes": [
+        {
+          "variable": "is_regular_customer",
+          "operator": "==",
+          "value": true
+        },
+        {
+          "variable": "has_loyalty_card",
+          "operator": "==",
+          "value": true
+        },
+        {
+          "variable": "total_new_books_price",
+          "operator": ">",
+          "value": 0
+        }
+      ],
+      "effects": [
+        {
+          "variable": "discount_rate",
+          "operator": "=",
+          "value": 0.10
+        }
+      ]
+    },
+    {
+      "id": "R2",
+      "description": "Any customer buying new books for at least EUR 50 gets 10% price reduction.",
+      "causes": [
+        {
+          "variable": "total_new_books_price",
+          "operator": ">=",
+          "value": 50
+        }
+      ],
+      "effects": [
+        {
+          "variable": "discount_rate",
+          "operator": "=",
+          "value": 0.10
+        }
+      ]
+    },
+    {
+      "id": "R3",
+      "description": "If somebody has a card and buys new books not less than EUR 50, then the price reduction is 15%.",
+      "causes": [
+        {
+          "variable": "has_loyalty_card",
+          "operator": "==",
+          "value": true
+        },
+        {
+          "variable": "total_new_books_price",
+          "operator": ">=",
+          "value": 50
+        }
+      ],
+      "effects": [
+        {
+          "variable": "discount_rate",
+          "operator": "=",
+          "value": 0.15
+        }
+      ]
+    },
+    {
+      "id": "R4",
+      "description": "If a customer buys second hand books s/he gets price reduction 5%, but only if the price of them exceeds EUR 60 and s/he also buys new books for more than EUR 30.",
+      "causes": [
+        {
+          "variable": "total_second_hand_books_price",
+          "operator": ">",
+          "value": 60
+        },
+        {
+          "variable": "total_new_books_price",
+          "operator": ">",
+          "value": 30
+        }
+      ],
+      "effects": [
+        {
+          "variable": "discount_rate",
+          "operator": "=",
+          "value": 0.05
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "R5",
+      "description": "The output is the price to be paid. Minimum price difference: 0.01 euro.",
+      "causes": [],
+      "effects": [
+        {
+          "variable": "min_price_step",
+          "operator": "=",
+          "value": 0.01
+        },
+        {
+          "variable": "gross_total_price",
+          "operator": "=",
+          "expression": "total_new_books_price + total_second_hand_books_price"
+        },
+        {
+          "variable": "price_to_be_paid",
+          "operator": "=",
+          "expression": "round((1 - discount_rate) * gross_total_price, 2)"
+        }
+      ]
+    }
+  ]
+}

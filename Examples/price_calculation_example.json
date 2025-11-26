@@ -1,0 +1,170 @@
+{
+  "variables": [
+    {
+      "name": "total_goods_price",
+      "type": "decimal",
+      "unit": "EUR",
+      "role": "input"
+    },
+    {
+      "name": "total_weight_kg",
+      "type": "decimal",
+      "unit": "kg",
+      "role": "input"
+    },
+    {
+      "name": "prepay_with_credit_card",
+      "type": "boolean",
+      "role": "input"
+    },
+    {
+      "name": "goods_discount_rate",
+      "type": "decimal",
+      "role": "internal"
+    },
+    {
+      "name": "delivery_price",
+      "type": "decimal",
+      "unit": "EUR",
+      "role": "internal"
+    },
+    {
+      "name": "min_price_step",
+      "type": "decimal",
+      "unit": "EUR",
+      "role": "internal"
+    },
+    {
+      "name": "min_weight_step",
+      "type": "decimal",
+      "unit": "kg",
+      "role": "internal"
+    },
+    {
+      "name": "price_to_be_paid",
+      "type": "decimal",
+      "unit": "EUR",
+      "role": "output"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "R1",
+      "description": "The customer gets 10% price reduction if the price of the goods reaches 200 euros.",
+      "causes": [
+        {
+          "variable": "total_goods_price",
+          "operator": ">=",
+          "value": 200
+        }
+      ],
+      "effects": [
+        {
+          "variable": "goods_discount_rate",
+          "operator": "=",
+          "value": 0.10
+        }
+      ]
+    },
+    {
+      "id": "R2",
+      "description": "The delivery is free if the total weight of the goods is under five kilograms. Reaching 5 kg, the delivery price is the weight in euros.",
+      "causes": [],
+      "effects": [
+        {
+          "variable": "delivery_price",
+          "operator": "=",
+          "expression": "total_weight_kg < 5 ? 0 : total_weight_kg"
+        }
+      ]
+    },
+    {
+      "id": "R3",
+      "description": "The delivery remains free if the price of the goods exceeds 100 euros.",
+      "causes": [
+        {
+          "variable": "total_goods_price",
+          "operator": ">",
+          "value": 100
+        }
+      ],
+      "effects": [
+        {
+          "variable": "delivery_price",
+          "operator": "=",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "R4",
+      "description": "If the customer prepays with a credit card, then s/he gets 3% price reduction from the reduced price of the goods.",
+      "causes": [
+        {
+          "variable": "prepay_with_credit_card",
+          "operator": "==",
+          "value": true
+        }
+      ],
+      "effects": [
+        {
+          "variable": "goods_discount_rate",
+          "operator": "=",
+          "expression": "1 - (1 - goods_discount_rate) * 0.97"
+        }
+      ]
+    },
+    {
+      "id": "R5",
+      "description": "If the price reaches 200 euros and the customer pays with credit card, and the weight is under 5 kg, then the customer gets a 15% price reduction for the original price of the goods.",
+      "causes": [
+        {
+          "variable": "total_goods_price",
+          "operator": ">=",
+          "value": 200
+        },
+        {
+          "variable": "prepay_with_credit_card",
+          "operator": "==",
+          "value": true
+        },
+        {
+          "variable": "total_weight_kg",
+          "operator": "<",
+          "value": 5
+        }
+      ],
+      "effects": [
+        {
+          "variable": "goods_discount_rate",
+          "operator": "=",
+          "value": 0.15
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "R6",
+      "description": "The output is the price to be paid. Minimum price difference is EUR 0.1, minimum weight difference is 0.1 kg.",
+      "causes": [],
+      "effects": [
+        {
+          "variable": "min_price_step",
+          "operator": "=",
+          "value": 0.1
+        },
+        {
+          "variable": "min_weight_step",
+          "operator": "=",
+          "value": 0.1
+        },
+        {
+          "variable": "price_to_be_paid",
+          "operator": "=",
+          "expression": "round((1 - goods_discount_rate) * total_goods_price + delivery_price, 1)"
+        }
+      ]
+    }
+  ]
+}
