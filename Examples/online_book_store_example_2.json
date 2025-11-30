@@ -26,18 +26,18 @@
       "name": "gross_total_price",
       "type": "decimal",
       "unit": "EUR",
-      "role": "internal"
+      "role": "eternal-truth"
     },
     {
       "name": "discount_rate",
       "type": "decimal",
-      "role": "internal"
+      "role": "eternal-truth"
     },
     {
       "name": "min_price_step",
       "type": "decimal",
       "unit": "EUR",
-      "role": "internal"
+      "role": "eternal-truth"
     },
     {
       "name": "price_to_be_paid",
@@ -50,7 +50,7 @@
     {
       "id": "R1",
       "description": "For online new book purchasing regular customers with cards obtain 10% price reduction.",
-      "causes": [
+      "Causes": [
         {
           "variable": "is_regular_customer",
           "operator": "==",
@@ -78,7 +78,7 @@
     {
       "id": "R2",
       "description": "Any customer buying new books for at least EUR 50 gets 10% price reduction.",
-      "causes": [
+      "Causes": [
         {
           "variable": "total_new_books_price",
           "operator": ">=",
@@ -96,7 +96,7 @@
     {
       "id": "R3",
       "description": "If somebody has a card and buys new books not less than EUR 50, then the price reduction is 15%.",
-      "causes": [
+      "Causes": [
         {
           "variable": "has_loyalty_card",
           "operator": "==",
@@ -119,7 +119,7 @@
     {
       "id": "R4",
       "description": "If a customer buys second hand books s/he gets price reduction 5%, but only if the price of them exceeds EUR 60 and s/he also buys new books for more than EUR 30.",
-      "causes": [
+      "Causes": [
         {
           "variable": "total_second_hand_books_price",
           "operator": ">",
@@ -144,22 +144,18 @@
     {
       "id": "R5",
       "description": "The output is the price to be paid. Minimum price difference: 0.01 euro.",
-      "causes": [],
-      "effects": [
+      "question": [
+        {
+          "variable": "price_to_be_paid",
+          "operator": "=",
+          "value": "?"
+        }
+      ],
+      "rules": [
         {
           "variable": "min_price_step",
           "operator": "=",
           "value": 0.01
-        },
-        {
-          "variable": "gross_total_price",
-          "operator": "=",
-          "value": "total_new_books_price + total_second_hand_books_price"
-        },
-        {
-          "variable": "price_to_be_paid",
-          "operator": "=",
-          "value": "round((1 - discount_rate) * gross_total_price, 2)"
         }
       ]
     }

@@ -16,25 +16,25 @@
       "name": "base_vacation_days",
       "type": "integer",
       "unit": "days",
-      "role": "internal"
+      "role": "eternal-truth"
     },
     {
       "name": "extra_days_group1",
       "type": "integer",
       "unit": "days",
-      "role": "internal"
+      "role": "eternal-truth"
     },
     {
       "name": "extra_days_group3",
       "type": "integer",
       "unit": "days",
-      "role": "internal"
+      "role": "eternal-truth"
     },
     {
       "name": "final_extra_days",
       "type": "integer",
       "unit": "days",
-      "role": "internal"
+      "role": "eternal-truth"
     },
     {
       "name": "total_vacation_days",
@@ -47,7 +47,7 @@
     {
       "id": "R1",
       "description": "Every employee receives at least 22 days per year.",
-      "causes": [],
+      "Causes": [],
       "effects": [
         {
           "variable": "base_vacation_days",
@@ -67,21 +67,63 @@
       ]
     },
     {
-      "id": "R1-1",
-      "description": "Employees younger than 18 or at least 60 years, or employees with at least 30 years of service will receive 5 extra days.",
-      "causes": [],
+      "id": "R1-1a",
+      "description": "Employees younger than 18 receive 5 extra days.",
+      "Causes": [
+        {
+          "variable": "age",
+          "operator": "<",
+          "value": 18
+        }
+      ],
       "effects": [
         {
           "variable": "extra_days_group1",
           "operator": "=",
-          "value": "(age < 18 || age >= 60 || years_of_service >= 30) ? 5 : extra_days_group1"
+          "value": 5
+        }
+      ]
+    },
+    {
+      "id": "R1-1b",
+      "description": "Employees of at least 60 years receive 5 extra days.",
+      "Causes": [
+        {
+          "variable": "age",
+          "operator": ">=",
+          "value": 60
+        }
+      ],
+      "effects": [
+        {
+          "variable": "extra_days_group1",
+          "operator": "=",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "id": "R1-1c",
+      "description": "Employees with at least 30 years of service receive 5 extra days.",
+      "Causes": [
+        {
+          "variable": "years_of_service",
+          "operator": ">=",
+          "value": 30
+        }
+      ],
+      "effects": [
+        {
+          "variable": "extra_days_group1",
+          "operator": "=",
+          "value": 5
         }
       ]
     },
     {
       "id": "R1-2",
-      "description": "Employees of age 60 or more with at least 30 years of service receive 3 extra days, on top of possible additional days already given based on R1-1.",
-      "causes": [
+      "description": "Employees of age 60 or more with at least 30 years of service receive 3 extra days on top of group1.",
+      "Causes": [
         {
           "variable": "age",
           "operator": ">=",
@@ -102,24 +144,54 @@
       ]
     },
     {
-      "id": "R1-3",
-      "description": "If an employee has at least 15 years of service, 2 extra days are given. These two days are also provided for employees of age 45 or more. These extra days cannot be combined with the other extra days.",
-      "causes": [],
+      "id": "R1-3a",
+      "description": "If an employee has at least 15 years of service, 2 extra days are given (non-combinable group).",
+      "Causes": [
+        {
+          "variable": "years_of_service",
+          "operator": ">=",
+          "value": 15
+        }
+      ],
       "effects": [
         {
           "variable": "extra_days_group3",
           "operator": "=",
-          "value": "(years_of_service >= 15 || age >= 45) ? 2 : 0"
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": "R1-3b",
+      "description": "Employees of age 45 or more also receive these 2 non-combinable extra days.",
+      "Causes": [
+        {
+          "variable": "age",
+          "operator": ">=",
+          "value": 45
+        }
+      ],
+      "effects": [
+        {
+          "variable": "extra_days_group3",
+          "operator": "=",
+          "value": 2
         }
       ]
     }
   ],
   "outputs": [
     {
-      "id": "R_display",
+      "id": "R-display",
       "description": "Display the vacation days.",
-      "causes": [],
-      "effects": [
+      "question": [
+        {
+          "variable": "total_vacation_days",
+          "operator": "=",
+          "value": "?"
+        }
+      ],
+      "rules": [
         {
           "variable": "final_extra_days",
           "operator": "=",

@@ -22,7 +22,7 @@
       "name": "sum_points",
       "type": "integer",
       "unit": "points",
-      "role": "internal"
+      "role": "eternal-truth"
     },
     {
       "name": "result_grade",
@@ -33,14 +33,14 @@
   "inputs": [
     {
       "id": "R1",
-      "description": "A university course grade system evaluates grades based on BE (blackboard exercises), LE (laboratory exercises), WP (written part), each in the range 0–50 points.",
-      "causes": [],
+      "description": "BE, LE, WP are each in the range 0–50 points.",
+      "Causes": [],
       "effects": []
     },
     {
       "id": "R2",
       "description": "The sum of partial grades SUM = (BE + LE + WP) is calculated.",
-      "causes": [],
+      "Causes": [],
       "effects": [
         {
           "variable": "sum_points",
@@ -48,20 +48,156 @@
           "value": "blackboard_exercises_points + laboratory_exercises_points + written_part_points"
         }
       ]
+    },
+    {
+      "id": "R2-1a",
+      "description": "If BE is under 25 points – failed.",
+      "Causes": [
+        {
+          "variable": "blackboard_exercises_points",
+          "operator": "<",
+          "value": 25
+        }
+      ],
+      "effects": [
+        {
+          "variable": "result_grade",
+          "operator": "=",
+          "value": "failed"
+        }
+      ]
+    },
+    {
+      "id": "R2-1b",
+      "description": "If LE is under 25 points – failed.",
+      "Causes": [
+        {
+          "variable": "laboratory_exercises_points",
+          "operator": "<",
+          "value": 25
+        }
+      ],
+      "effects": [
+        {
+          "variable": "result_grade",
+          "operator": "=",
+          "value": "failed"
+        }
+      ]
+    },
+    {
+      "id": "R2-1c",
+      "description": "If WP is under 25 points – failed.",
+      "Causes": [
+        {
+          "variable": "written_part_points",
+          "operator": "<",
+          "value": 25
+        }
+      ],
+      "effects": [
+        {
+          "variable": "result_grade",
+          "operator": "=",
+          "value": "failed"
+        }
+      ]
+    },
+    {
+      "id": "R2-2",
+      "description": "If SUM is less than 76 points – failed.",
+      "Causes": [
+        {
+          "variable": "sum_points",
+          "operator": "<",
+          "value": 76
+        }
+      ],
+      "effects": [
+        {
+          "variable": "result_grade",
+          "operator": "=",
+          "value": "failed"
+        }
+      ]
+    },
+    {
+      "id": "R2-3",
+      "description": "If SUM is between 76 and 100 points – satisfactory.",
+      "Causes": [
+        {
+          "variable": "sum_points",
+          "operator": ">=",
+          "value": 76
+        },
+        {
+          "variable": "sum_points",
+          "operator": "<=",
+          "value": 100
+        }
+      ],
+      "effects": [
+        {
+          "variable": "result_grade",
+          "operator": "=",
+          "value": "satisfactory"
+        }
+      ]
+    },
+    {
+      "id": "R2-4",
+      "description": "If SUM is between 101 and 125 points – good.",
+      "Causes": [
+        {
+          "variable": "sum_points",
+          "operator": ">=",
+          "value": 101
+        },
+        {
+          "variable": "sum_points",
+          "operator": "<=",
+          "value": 125
+        }
+      ],
+      "effects": [
+        {
+          "variable": "result_grade",
+          "operator": "=",
+          "value": "good"
+        }
+      ]
+    },
+    {
+      "id": "R2-5",
+      "description": "If SUM is greater than 125 points – very good.",
+      "Causes": [
+        {
+          "variable": "sum_points",
+          "operator": ">",
+          "value": 125
+        }
+      ],
+      "effects": [
+        {
+          "variable": "result_grade",
+          "operator": "=",
+          "value": "very good"
+        }
+      ]
     }
   ],
   "outputs": [
     {
       "id": "R_result",
-      "description": "Final grade according to rules R2-1 to R2-5 (failed/satisfactory/good/very good).",
-      "causes": [],
-      "effects": [
+      "description": "Final grade of the course.",
+      "question": [
         {
           "variable": "result_grade",
           "operator": "=",
-          "value": "(blackboard_exercises_points < 25 || laboratory_exercises_points < 25 || written_part_points < 25 || sum_points < 76) ? \"failed\" : (sum_points <= 100 ? \"satisfactory\" : (sum_points <= 125 ? \"good\" : \"very good\"))"
+          "value": "?"
         }
-      ]
+      ],
+      "rules": []
     }
   ]
 }
