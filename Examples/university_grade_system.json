@@ -45,7 +45,7 @@
         {
           "variable": "sum_points",
           "operator": "=",
-          "expression": "blackboard_exercises_points + laboratory_exercises_points + written_part_points"
+          "value": "blackboard_exercises_points + laboratory_exercises_points + written_part_points"
         }
       ]
     }
@@ -59,7 +59,7 @@
         {
           "variable": "result_grade",
           "operator": "=",
-          "expression": "(blackboard_exercises_points < 25 || laboratory_exercises_points < 25 || written_part_points < 25 || sum_points < 76) ? \"failed\" : (sum_points <= 100 ? \"satisfactory\" : (sum_points <= 125 ? \"good\" : \"very good\"))"
+          "value": "(blackboard_exercises_points < 25 || laboratory_exercises_points < 25 || written_part_points < 25 || sum_points < 76) ? \"failed\" : (sum_points <= 100 ? \"satisfactory\" : (sum_points <= 125 ? \"good\" : \"very good\"))"
         }
       ]
     }

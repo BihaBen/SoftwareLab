@@ -74,7 +74,7 @@
         {
           "variable": "extra_days_group1",
           "operator": "=",
-          "expression": "(age < 18 || age >= 60 || years_of_service >= 30) ? 5 : extra_days_group1"
+          "value": "(age < 18 || age >= 60 || years_of_service >= 30) ? 5 : extra_days_group1"
         }
       ]
     },
@@ -97,7 +97,7 @@
         {
           "variable": "extra_days_group1",
           "operator": "=",
-          "expression": "extra_days_group1 + 3"
+          "value": "extra_days_group1 + 3"
         }
       ]
     },
@@ -109,7 +109,7 @@
         {
           "variable": "extra_days_group3",
           "operator": "=",
-          "expression": "(years_of_service >= 15 || age >= 45) ? 2 : 0"
+          "value": "(years_of_service >= 15 || age >= 45) ? 2 : 0"
         }
       ]
     }
@@ -123,12 +123,12 @@
         {
           "variable": "final_extra_days",
           "operator": "=",
-          "expression": "max(extra_days_group1, extra_days_group3)"
+          "value": "max(extra_days_group1, extra_days_group3)"
         },
         {
           "variable": "total_vacation_days",
           "operator": "=",
-          "expression": "base_vacation_days + final_extra_days"
+          "value": "base_vacation_days + final_extra_days"
         }
       ]
     }

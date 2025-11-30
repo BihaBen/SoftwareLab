@@ -69,14 +69,38 @@
     {
       "id": "R2",
       "description": "The delivery is free if the total weight of the goods is under five kilograms. Reaching 5 kg, the delivery price is the weight in euros.",
-      "causes": [],
-      "effects": [
-        {
-          "variable": "delivery_price",
-          "operator": "=",
-          "expression": "total_weight_kg < 5 ? 0 : total_weight_kg"
-        }
-      ]
+      "if": {
+        "causes": [
+          {
+            "variable": "total_weight_kg",
+            "operator": "<",
+            "value": 5
+          }
+        ],
+        "effects": [
+          {
+            "variable": "delivery_price",
+            "operator": "=",
+            "value": 0
+          }
+        ]
+      },
+      "else": {
+        "causes": [
+          {
+            "variable": "total_weight_kg",
+            "operator": ">=",
+            "value": 5
+          }
+        ],
+        "effects": [
+          {
+            "variable": "delivery_price",
+            "operator": "=",
+            "value": "total_weight_kg"
+          }
+        ]
+      }
     },
     {
       "id": "R3",
@@ -110,7 +134,7 @@
         {
           "variable": "goods_discount_rate",
           "operator": "=",
-          "expression": "1 - (1 - goods_discount_rate) * 0.97"
+          "value": "1 - (1 - goods_discount_rate) * 0.97"
         }
       ]
     },
@@ -162,7 +186,7 @@
         {
           "variable": "price_to_be_paid",
           "operator": "=",
-          "expression": "round((1 - goods_discount_rate) * total_goods_price + delivery_price, 1)"
+          "value": "round((1 - goods_discount_rate) * total_goods_price + delivery_price, 1)"
         }
       ]
     }

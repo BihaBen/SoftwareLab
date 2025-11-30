@@ -154,12 +154,12 @@
         {
           "variable": "gross_total_price",
           "operator": "=",
-          "expression": "total_new_books_price + total_second_hand_books_price"
+          "value": "total_new_books_price + total_second_hand_books_price"
         },
         {
           "variable": "price_to_be_paid",
           "operator": "=",
-          "expression": "round((1 - discount_rate) * gross_total_price, 2)"
+          "value": "round((1 - discount_rate) * gross_total_price, 2)"
         }
       ]
     }
