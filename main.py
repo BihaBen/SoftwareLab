@@ -4,7 +4,7 @@ from Pre_process.DataCleaning import load_json_requirements
 from Checking_process import (
     check_variable_conflicts,
     check_logical_exclusions,
-    check_redundant_rules,
+    check_redunant_rules,
 )
 
 
@@ -22,7 +22,7 @@ def run_all_checks(requirements_data):
         errors.append(("Logikai kizárások", logical_exclusions))
 
     # 3. Redundáns szabályok ellenőrzése
-    redundant_rules = check_redundant_rules.check(requirements_data)
+    redundant_rules = check_redunant_rules.check(requirements_data)
     if redundant_rules:
         errors.append(("Redundáns szabályok", redundant_rules))
 
@@ -50,7 +50,7 @@ def main():
     if not errors:
         print("A JSON teljesen hibátlan.")
     else:
-        print("❌ Hibák találhatók:")
+        print("Hibák találhatók:")
         for error_type, details in errors:
             print(f"\n--- {error_type} ---")
             for detail in details:
